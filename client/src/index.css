@@ -1,0 +1,43 @@
+.container {
+  padding: 20px;
+  background-color: black;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  padding: 20px;
+}
+
+.card {
+  background-color: white;
+  border: 20px solid #92d2f9;
+  border-radius: 10px;
+  padding: 15px;
+  color: black;
+}
+
+body {
+  text-align: center;
+  font-family: Arial, sans-serif;
+  font-size: 1rem;
+  margin: 0;
+  padding: 0;
+  background-color: black;
+  min-height: 100vh;
+}
+
+h1 {
+  color: white;
+  text-transform: uppercase;
+  margin: 3rem 0;
+}
+
+h2 {
+  color: red;
+  margin-bottom: 2rem;
+}
+.container h1 {
+  font-size: 60px;
+}
