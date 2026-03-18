@@ -132,11 +132,23 @@ async function deleteOneFoodTruck(id) {
 };
 
 // 11. updateFoodTruckLocation(id, newLocation)
+// this function updates the location of one food truck
 async function updateFoodTruckLocation(id, newLocation) {
+  
+  // db.query = we are sending a SQL command to our PostgreSQL database
+  // we are replacing location and ID to a new value in the food_trucks SQL table
   const result = await db.query(
     "UPDATE food_trucks SET current_location = $1 WHERE id = $2",
+    
+    // this array replaces the $1 and $2 in the SQL string above
+    // $1 becomes newLocation
+    // $2 becomes id
     [newLocation, id],
   );
+
+  // result contains info from the database (like how many rows were updated)
+  // and return the result
+  
   return result;
 }
 
@@ -239,14 +251,24 @@ app.post('/delete-one-food-truck/:id', async (req, res) => {
     }
 
 });
-// 11. POST /update-food-truck-location
+// 11. updateFoodTruckLocation(id, newLocation)
+
+
+// this endpoint lets us update a food truck location using a post request
 app.post("/update-food-truck-location", async (req, res) => {
+  
+  // get the id and new location from the body
+  //  id tells us WHICH food truck to update
   const id = req.body.id;
+  // this is the new value we want to save in the database
   const newLocation = req.body.newLocation;
 
+  // call the helper function to update the database
   await updateFoodTruckLocation(id, newLocation);
 
+  // send a success message back to the client this lets the frontend know everything worked
   res.send("Success! The food truck location was updated!");
 });
+
 
 // 12. POST /update-food-truck-rating
