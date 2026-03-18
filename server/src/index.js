@@ -132,6 +132,7 @@ async function deleteOneFoodTruck(id) {
 };
 
 // 11. updateFoodTruckLocation(id, newLocation)
+
 // this function updates the location of one food truck
 async function updateFoodTruckLocation(id, newLocation) {
   
@@ -140,13 +141,13 @@ async function updateFoodTruckLocation(id, newLocation) {
   const result = await db.query(
     "UPDATE food_trucks SET current_location = $1 WHERE id = $2",
     
-    // this array replaces the $1 and $2 in the SQL string above
+    // this replaces the $1 and $2 in the SQL string above
     // $1 becomes newLocation
     // $2 becomes id
     [newLocation, id],
   );
 
-  // result contains info from the database (like how many rows were updated)
+  // result contains info from the database -like how many rows were updated-
   // and return the result
   
   return result;
