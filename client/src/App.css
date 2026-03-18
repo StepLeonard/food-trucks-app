@@ -5,6 +5,10 @@ body {
   margin: 0;
   padding: 0;
   background-color: black;
+
+  
+  color: white;
+
   min-height: 100vh;
 }
 
@@ -43,7 +47,7 @@ h2 {
   margin-bottom: 2rem;
 }
 
-/* Form styles */
+
 form {
   display: flex;
   flex-direction: column;
@@ -53,7 +57,7 @@ form {
   text-align: left;
 }
 
-/* Form labels */
+
 form label {
   display: flex;
   flex-direction: column;
@@ -62,7 +66,7 @@ form label {
   text-align: left;
 }
 
-/* Form Inputs */
+
 form input,
 form select {
   height: 2rem;
@@ -70,9 +74,21 @@ form select {
   font-size: 1rem;
 }
 
-/* Submit button */
+
 form button {
   height: 2.4rem;
   font-size: 1rem;
   cursor: pointer;
+}
+
+
+.truck-card {
+  border: 2px solid white;
+  margin: 1rem auto;
+  padding: 1rem;
+  width: 80%;
+  max-width: 500px;
+  background-color: #111;
+  color: white;
+  border-radius: 10px;
 }
