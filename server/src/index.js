@@ -4,7 +4,7 @@
 
 import express from "express";
 import pg from "pg";
-import config from "./config.js";
+
 
 const db = new pg.Pool({
   connectionString: process.env.DATABASE_URL,
