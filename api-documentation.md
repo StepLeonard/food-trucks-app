@@ -70,7 +70,7 @@ Example endpoints:
 
 ## 🔧 Future Improvements
 
-- Add full CRUD functionality (update + delete)
+- Add full functionality (update + delete)
 - Implement user authentication and authorization
 - Improve UI/UX with enhanced styling and animations
 - Add map integration for real-time food truck locations

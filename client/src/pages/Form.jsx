@@ -20,7 +20,8 @@ function Form() {
       current_location: formData.currentLocation,
       daily_special: formData.dailySpecial,
       slogan: formData.slogan,
-      has_vegan_options: formData.hasVeganOptions === "true" || formData.hasVeganOptions === true,
+      has_vegan_options:
+        formData.hasVeganOptions === "true" || formData.hasVeganOptions === true,
       price_level: Number(formData.priceLevel),
       rating: Number(formData.rating),
     };
