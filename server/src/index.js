@@ -1,7 +1,6 @@
 // ---------------------------------
 // Boilerplate Code to Set Up Server
 // ---------------------------------
-
 import express from "express";
 import pg from "pg";
 import cors from "cors";
@@ -13,13 +12,9 @@ const db = new pg.Pool({
 
 const app = express();
 
-// ✅ allow Netlify frontend to talk to backend
 app.use(cors());
-
-// ✅ allow JSON body parsing
 app.use(express.json());
 
-// ✅ Render needs dynamic port
 const port = process.env.PORT || 3000;
 
 app.listen(port, () => {
