@@ -8,12 +8,15 @@ app.use(express.json());
 
 const port = process.env.PORT || 3000;
 
-// fake data lives here
+// ---------------------------------
+// Fake Data
+// ---------------------------------
+
 let foodTrucks = [
   {
     id: 1,
     name: "Taco Fiesta",
-    current_location: "Downtown Las Vegas",
+    current_location: "Downtown",
     daily_special: "Street Tacos",
     slogan: "Fresh and fast",
     has_vegan_options: true,
@@ -23,7 +26,7 @@ let foodTrucks = [
   {
     id: 2,
     name: "Burger Bus",
-    current_location: "Henderson",
+    current_location: "Main Street",
     daily_special: "Double Cheeseburger",
     slogan: "Burgers on wheels",
     has_vegan_options: false,
@@ -32,13 +35,23 @@ let foodTrucks = [
   },
   {
     id: 3,
-    name: "Wrap Star",
+    name: "Green Machine",
     current_location: "Summerlin",
-    daily_special: "Chicken Caesar Wrap",
-    slogan: "Wrapped up right",
+    daily_special: "Vegan Burrito",
+    slogan: "Fresh fuel on wheels",
     has_vegan_options: true,
-    price_level: 2,
-    rating: 4.3,
+    price_level: 1,
+    rating: 4.2,
+  },
+  {
+    id: 4,
+    name: "Pizza Wagon",
+    current_location: "Henderson",
+    daily_special: "Pepperoni Slice",
+    slogan: "Rolling with flavor",
+    has_vegan_options: false,
+    price_level: 4,
+    rating: 4.8,
   },
 ];
 
@@ -54,12 +67,28 @@ async function getFoodTruckById(id) {
   return foodTrucks.find((truck) => truck.id === Number(id));
 }
 
+async function getVeganFoodTrucks() {
+  return foodTrucks.filter((truck) => truck.has_vegan_options === true);
+}
+
+async function getFoodTrucksByPrice(price) {
+  return foodTrucks.filter(
+    (truck) => Number(truck.price_level) === Number(price)
+  );
+}
+
 async function getTopRatedFoodTrucks() {
   return foodTrucks.filter((truck) => Number(truck.rating) >= 4.5);
 }
 
-async function sortedByPrice() {
-  return [...foodTrucks].sort((a, b) => b.price_level - a.price_level);
+async function getFoodTrucksSortedByRating() {
+  return [...foodTrucks].sort((a, b) => Number(b.rating) - Number(a.rating));
+}
+
+async function getFoodTrucksSortedByPrice() {
+  return [...foodTrucks].sort(
+    (a, b) => Number(b.price_level) - Number(a.price_level)
+  );
 }
 
 async function getFoodTrucksCount() {
@@ -90,19 +119,6 @@ async function addOneFoodTruck(
   return newTruck;
 }
 
-async function deleteOneFoodTruck(id) {
-  const truckIndex = foodTrucks.findIndex((truck) => truck.id === Number(id));
-
-  if (truckIndex === -1) {
-    return `No truck found with id ${id}`;
-  }
-
-  const deletedTruck = foodTrucks[truckIndex];
-  foodTrucks.splice(truckIndex, 1);
-
-  return `Success! Food truck #${id}, ${deletedTruck.name} was deleted!`;
-}
-
 async function updateFoodTruckLocation(id, newLocation) {
   const truck = foodTrucks.find((truck) => truck.id === Number(id));
 
@@ -118,6 +134,7 @@ async function updateFoodTruckLocation(id, newLocation) {
 // API Endpoints
 // ---------------------------------
 
+// 1. GET /get-all-food-trucks
 app.get("/get-all-food-trucks", async (req, res) => {
   try {
     const trucks = await getAllFoodTrucks();
@@ -128,6 +145,7 @@ app.get("/get-all-food-trucks", async (req, res) => {
   }
 });
 
+// 2. GET /get-food-truck-by-id/:id
 app.get("/get-food-truck-by-id/:id", async (req, res) => {
   try {
     const id = req.params.id;
@@ -144,6 +162,30 @@ app.get("/get-food-truck-by-id/:id", async (req, res) => {
   }
 });
 
+// 3. GET /get-vegan-food-trucks
+app.get("/get-vegan-food-trucks", async (req, res) => {
+  try {
+    const trucks = await getVeganFoodTrucks();
+    res.json(trucks);
+  } catch (error) {
+    console.error("ERROR IN /get-vegan-food-trucks:", error);
+    res.status(500).json({ error: "Could not get vegan food trucks" });
+  }
+});
+
+// 4. GET /get-food-trucks-by-price/:price
+app.get("/get-food-trucks-by-price/:price", async (req, res) => {
+  try {
+    const price = req.params.price;
+    const trucks = await getFoodTrucksByPrice(price);
+    res.json(trucks);
+  } catch (error) {
+    console.error("ERROR IN /get-food-trucks-by-price/:price:", error);
+    res.status(500).json({ error: "Could not get food trucks by price" });
+  }
+});
+
+// 5. GET /get-top-rated-food-trucks
 app.get("/get-top-rated-food-trucks", async (req, res) => {
   try {
     const trucks = await getTopRatedFoodTrucks();
@@ -154,16 +196,29 @@ app.get("/get-top-rated-food-trucks", async (req, res) => {
   }
 });
 
+// 6. GET /get-food-trucks-sorted-by-rating
+app.get("/get-food-trucks-sorted-by-rating", async (req, res) => {
+  try {
+    const trucks = await getFoodTrucksSortedByRating();
+    res.json(trucks);
+  } catch (error) {
+    console.error("ERROR IN /get-food-trucks-sorted-by-rating:", error);
+    res.status(500).json({ error: "Could not sort food trucks by rating" });
+  }
+});
+
+// 7. GET /get-food-trucks-sorted-by-price
 app.get("/get-food-trucks-sorted-by-price", async (req, res) => {
   try {
-    const sortedFoodTruckPrice = await sortedByPrice();
-    res.json(sortedFoodTruckPrice);
+    const trucks = await getFoodTrucksSortedByPrice();
+    res.json(trucks);
   } catch (error) {
     console.error("ERROR IN /get-food-trucks-sorted-by-price:", error);
     res.status(500).json({ error: "Could not sort food trucks by price" });
   }
 });
 
+// 8. GET /get-food-trucks-count
 app.get("/get-food-trucks-count", async (req, res) => {
   try {
     const count = await getFoodTrucksCount();
@@ -174,6 +229,7 @@ app.get("/get-food-trucks-count", async (req, res) => {
   }
 });
 
+// 9. POST /add-one-food-truck
 app.post("/add-one-food-truck", async (req, res) => {
   try {
     const {
@@ -203,20 +259,7 @@ app.post("/add-one-food-truck", async (req, res) => {
   }
 });
 
-app.post("/delete-one-food-truck/:id", async (req, res) => {
-  try {
-    const id = req.params.id;
-    const result = await deleteOneFoodTruck(id);
-    res.send(result);
-  } catch (error) {
-    console.error("ERROR IN /delete-one-food-truck/:id:", error);
-    res.status(500).json({
-      error:
-        "There was an issue while deleting the food truck. Please review your request and try again",
-    });
-  }
-});
-
+// 10. POST /update-food-truck-location
 app.post("/update-food-truck-location", async (req, res) => {
   try {
     const id = req.body.id;

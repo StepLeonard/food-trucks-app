@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "../App.css";
 
 function Form() {
@@ -12,6 +13,7 @@ function Form() {
     rating: 0,
   });
 
+  const navigate = useNavigate();
   const apiUrl = import.meta.env.VITE_API_URL || "http://localhost:3000";
 
   async function writeFoodTruckData() {
@@ -44,10 +46,13 @@ function Form() {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    writeFoodTruckData();
-    alert("Thanks for submitting a new food truck!");
+
+    await writeFoodTruckData();
+
+    // ✅ go back to home → triggers refresh
+    navigate("/");
   };
 
   return (

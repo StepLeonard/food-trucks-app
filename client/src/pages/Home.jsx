@@ -10,14 +10,12 @@ function Home() {
   async function getAllFoodTrucks() {
     const response = await fetch(`${apiUrl}/get-all-food-trucks`);
     const data = await response.json();
-    console.log("ALL TRUCKS:", data);
     setFoodTrucks(data);
   }
 
   async function getFoodTruckCount() {
     const response = await fetch(`${apiUrl}/get-food-trucks-count`);
     const data = await response.json();
-    console.log("COUNT:", data);
     setFoodTruckCount(data.count);
   }
 
