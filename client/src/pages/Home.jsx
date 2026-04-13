@@ -6,6 +6,7 @@ function Home() {
   const [foodTruckCount, setFoodTruckCount] = useState(0);
 
   const apiUrl = import.meta.env.VITE_API_URL || "http://localhost:3000";
+  console.log("API URL:", apiUrl);
 
   async function getAllFoodTrucks() {
     const response = await fetch(`${apiUrl}/get-all-food-trucks`);
