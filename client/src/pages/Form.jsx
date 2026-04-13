@@ -12,19 +12,20 @@ function Form() {
     rating: 0,
   });
 
-  // Send form data to the API to add a new food truck
+  const apiUrl = import.meta.env.VITE_API_URL || "http://localhost:3000";
+
   async function writeFoodTruckData() {
     const dataForAPI = {
       name: formData.name,
       current_location: formData.currentLocation,
       daily_special: formData.dailySpecial,
       slogan: formData.slogan,
-      has_vegan_options: formData.hasVeganOptions,
+      has_vegan_options: formData.hasVeganOptions === "true" || formData.hasVeganOptions === true,
       price_level: Number(formData.priceLevel),
       rating: Number(formData.rating),
     };
 
-    await fetch("/api/add-one-food-truck", {
+    await fetch(`${apiUrl}/add-one-food-truck`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -33,7 +34,6 @@ function Form() {
     });
   }
 
-  // handle changes to the form inputs
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
 
@@ -43,14 +43,12 @@ function Form() {
     });
   };
 
-  // handle when the user submits the form
   const handleSubmit = (e) => {
     e.preventDefault();
     writeFoodTruckData();
     alert("Thanks for submitting a new food truck!");
   };
 
-  // render JSX for the form to the page
   return (
     <>
       <h1>Add Food Truck</h1>
